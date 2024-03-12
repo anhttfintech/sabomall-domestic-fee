@@ -15,6 +15,15 @@ var getCookie = (cname) => {
     }
     return "";
 }
+var initToken = () => {
+    if (!localStorage.getItem('authenmeSessionToken')) {
+        if (!document.querySelector('[class=__box_link_grab_token]')) {
+            insertBoxLinkGrabToken();
+        }
+
+        throw new Error('Chưa có TOKEN');
+    }
+}
 var getToken = (currUrl) => {
     if (currUrl.indexOf('kho.xlogistics.biz') > -1) {
         return getCookie('auth_token');
@@ -208,7 +217,13 @@ var grabShippingFee = async () => {
                     if (maskedOrders.includes(orderCode)) { continue }
                     var urlOrder = `https://sabomall.admin.mygobiz.net/api/admin/orders/${orderCode}`;
                     var orderResp = await fetch(urlOrder , builderRequests({ currUrl: urlOrder, method: 'GET' }));
-                    if (orderResp.status !== 200) { toggleLoading(true); alert('Lỗi lấy dữ liệu đơn'); throw new Error('Lỗi lấy dữ liệu của đơn'); }
+                    if (orderResp.status !== 200) { 
+                        localStorage.removeItem('authenmeSessionToken'); 
+                        toggleLoading(true); 
+                        alert('Lỗi lấy dữ liệu đơn'); 
+                        initToken();
+                        throw new Error('Lỗi lấy dữ liệu của đơn'); 
+                    }
                     var resultOrder = await orderResp.json();
 
                     total_unpaid_all += resultOrder['totalUnpaid'];
@@ -272,14 +287,7 @@ var grabShippingFee = async () => {
     }
     
     if (window.location.pathname.indexOf('customer/domestic-shipping-orders') > -1) {
-        if (!localStorage.getItem('authenmeSessionToken')) {
-            if (!document.querySelector('[class=__box_link_grab_token]')) {
-                insertBoxLinkGrabToken();
-            }
-
-            throw new Error('Chưa có TOKEN');
-        }
-
+        initToken();
         grabShippingFee();
     }
 })();
