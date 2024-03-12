@@ -218,11 +218,16 @@ var grabShippingFee = async () => {
                     var urlOrder = `https://sabomall.admin.mygobiz.net/api/admin/orders/${orderCode}`;
                     var orderResp = await fetch(urlOrder , builderRequests({ currUrl: urlOrder, method: 'GET' }));
                     if (orderResp.status !== 200) { 
-                        localStorage.removeItem('authenmeSessionToken'); 
                         toggleLoading(true); 
                         alert('Lỗi lấy dữ liệu đơn'); 
-                        initToken();
                         throw new Error('Lỗi lấy dữ liệu của đơn'); 
+                    }
+
+                    if (orderResp.status === 401) { 
+                        localStorage.removeItem('authenmeSessionToken'); 
+                        toggleLoading(true); 
+                        initToken();
+                        throw new Error('Lỗi authorize'); 
                     }
                     var resultOrder = await orderResp.json();
 
