@@ -142,7 +142,7 @@
     }
 
     window.updateBoxResultShippingFee = (params) => {
-        const { shipping_fee_inner, shipping_fee_outer, exchange_rate } = params;
+        const { shipping_fee_inner, shipping_fee_outer, amount, exchange_rate } = params;
         var html = $ => `
             <style>
                 .__box_result_shipping_fee {
@@ -158,7 +158,7 @@
     
                 }
             </style>
-            <span class="item">Tỷ giá: <b>${exchange_rate}</b></span>
+            <span class="item">Tỷ giá: <b>${exchange_rate}</b> | Tài chính: <b>${amount}</b></span>
             <span class="item">Đi nội thành (HN/HCM): <b>${shipping_fee_inner}</b></span>
             <span class="item">Đi tỉnh: <b>${shipping_fee_outer}</b></span>
         `;
@@ -211,10 +211,11 @@
         var result = await orderPackagesResp.json();
         var username = result.customer.username;
         var total_weight = result.total_weight;
+        var total_unpaid_all = 0;
+        var maskedOrders = [];
 
         if (result.shipping_orders.suggestions.length > 0) {
-            var total_unpaid_all = 0;
-            var maskedOrders = [];
+            
             for (var indexSug in result.shipping_orders.suggestions) {
                 var currSug = result.shipping_orders.suggestions[indexSug];
 
@@ -222,6 +223,7 @@
                     for (var indexPackage in currSug.packages) {
                         var currPackage = currSug.packages[indexPackage];
                         var orderCode = currPackage['code_order'];
+                        console.log(maskedOrders)
                         if (maskedOrders.includes(orderCode)) { continue }
                         var urlOrder = `https://sabomall.admin.mygobiz.net/api/admin/orders/${orderCode}`;
                         var orderResp = await fetch(urlOrder, builderRequests({ currUrl: urlOrder, method: 'GET' }));
@@ -275,7 +277,7 @@
             return;
         }
 
-        updateBoxResultShippingFee({ shipping_fee_inner: Math.ceil(cellGrandTotalInner), shipping_fee_outer: Math.ceil(cellGrandTotalOuter), exchange_rate: currExchangeRate  });
+        updateBoxResultShippingFee({ shipping_fee_inner: Math.ceil(cellGrandTotalInner), shipping_fee_outer: Math.ceil(cellGrandTotalOuter), exchange_rate: currExchangeRate, amount: total_unpaid_all });
 
         var urlUser = `https://sabomall.admin.mygobiz.net/api/admin/customers/${username}`;
         var customerRaw = await fetch(urlUser, builderRequests({ currUrl: urlUser, method: 'GET' }));
