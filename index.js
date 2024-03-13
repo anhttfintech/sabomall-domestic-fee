@@ -1,8 +1,8 @@
 "use strict";
 (() => {
-    var sessionToken = false;
-    var sleep = time => new Promise(res => setTimeout(res, time));
-    var getCookie = (cname) => {
+    window.sessionToken = false;
+    window.sleep = time => new Promise(res => setTimeout(res, time));
+    window.getCookie = (cname) => {
         var name = cname + "=";
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
@@ -17,7 +17,7 @@
         }
         return "";
     }
-    var initToken = () => {
+    window.initToken = () => {
         if (!localStorage.getItem('authenmeSessionToken')) {
             if (!document.querySelector('[class=__box_link_grab_token]')) {
                 insertBoxLinkGrabToken();
@@ -26,14 +26,14 @@
             return;
         }
     }
-    var getToken = (currUrl) => {
+    window.getToken = (currUrl) => {
         if (currUrl.indexOf('kho.xlogistics.biz') > -1) {
             return getCookie('auth_token');
         }
 
         return localStorage.getItem('authenmeSessionToken');
     }
-    var builderRequests = (params) => {
+    window.builderRequests = (params) => {
         var myHeaders = new Headers();
         myHeaders.append("accept", "application/json, text/plain, */*");
         myHeaders.append("authorization", `Bearer ${getToken(params.currUrl)}`);
@@ -45,14 +45,14 @@
             redirect: 'follow'
         };
     }
-    var cloneCss = (sourceDocument, destinationDocument) => {
+    window.cloneCss = (sourceDocument, destinationDocument) => {
         var styles = sourceDocument.querySelectorAll("link[href*='.css'");
         styles.forEach((style) => {
             addCss(destinationDocument, style.href, 'stylesheet');
         })
     }
 
-    var addCss = (document, url, rel, type, crossOrigin) => {
+    window.addCss = (document, url, rel, type, crossOrigin) => {
         var head = document.head;
         var link = document.createElement("link");
 
@@ -86,7 +86,7 @@
         document.querySelector('[class=__box_link_grab_token]').remove();    
     }
  
-    var prompInputToken = () => {
+    window.prompInputToken = () => {
         var textPrompt = prompt('Nhập TOKEN');
         if (!textPrompt) {
             alert('Chưa có dữ liệu');
@@ -100,7 +100,7 @@
         grabShippingFee();
     }
 
-    var insertBoxLinkGrabToken = () => {
+    window.insertBoxLinkGrabToken = () => {
         var html_link_grab_token = $ => `
             <style>
                 .__box_link_grab_token a {
@@ -115,7 +115,7 @@
         document.querySelector('label[for=cod]').after(box_link_grab_token);
     }
 
-    var toggleLoading = (disabled) => {
+    window.toggleLoading = (disabled) => {
         var html = $ => `
             <style>
                 .__box_result_shipping_fee .loading {
@@ -141,7 +141,7 @@
         }
     }
 
-    var updateBoxResultShippingFee = (params) => {
+    window.updateBoxResultShippingFee = (params) => {
         const { shipping_fee_inner, shipping_fee_outer } = params;
         var html = $ => `
             <style>
@@ -173,7 +173,7 @@
         document.querySelector('input[id=cod]').after(box);
     }
 
-    var getDomesticShippingFee = async (params) => {
+    window.getDomesticShippingFee = async (params) => {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -196,7 +196,7 @@
         return await result.json();
     }
 
-    var grabShippingFee = async () => {
+    window.grabShippingFee = async () => {
         toggleLoading();
 
         var domestin_shipping_id = window.location.pathname.split('domestic-shipping-orders/')[1];
