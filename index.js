@@ -1,4 +1,3 @@
-"use strict";
 var sessionToken = false;
 var sleep = time => new Promise(res => setTimeout(res, time));
 var getCookie = (cname) => {
@@ -68,8 +67,7 @@ var addCss = (document, url, rel, type, crossOrigin) => {
 
 	head.appendChild(link);
 }
-
-var openGrabSessionToken = async () => {
+async function openGrabSessionToken() {
     var w = window.open('https://sabomall.admin.mygobiz.net/#/?automation', '_blank');
     var html_input_grab_token = $ => `
         <style>
@@ -83,7 +81,7 @@ var openGrabSessionToken = async () => {
     box_input_grab_token.innerHTML = html_input_grab_token();
     box_input_grab_token.className = '__box_input_grab_token';
     document.querySelector('label[for=cod]').after(box_input_grab_token);
-    document.querySelector('[class=__box_link_grab_token]').remove();    
+    document.querySelector('[class=__box_link_grab_token]').remove(); 
 }
 
 var prompInputToken = () => {
