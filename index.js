@@ -90,7 +90,8 @@
         var textPrompt = prompt('Nhập TOKEN');
         if (!textPrompt) {
             alert('Chưa có dữ liệu');
-            throw new Error(null);
+            return;
+            // throw new Error(null);
         }
 
         sessionToken = textPrompt;
@@ -188,7 +189,8 @@
         var result = await fetch("https://script.google.com/macros/s/AKfycbyMiwhmLmyoUqX6U0xj7dSytgADQgzROiVc3o5HIfWu3mP-D_udCFq-WAl4vdTc6QO5vQ/exec", requestOptions);
         if (result.status !== 200) {
             alert('Lỗi lấy tính phí nội địa');
-            throw new Error('Lỗi lấy dữ liệu bảng phí');
+            // throw new Error('Lỗi lấy dữ liệu bảng phí');
+            return;
         }
 
         return await result.json();
@@ -199,7 +201,11 @@
 
         var domestin_shipping_id = window.location.pathname.split('domestic-shipping-orders/')[1];
         var orderPackagesResp = await fetch(`https://logistics.mygobiz.net/v1/delivery-notes/${domestin_shipping_id}/last-mile-orders`, builderRequests({ currUrl: window.location.hostname, method: 'GET' }));
-        if (orderPackagesResp.status !== 200) { toggleLoading(true); throw new Error('Lỗi lấy dữ liệu các kiện của đơn'); }
+        if (orderPackagesResp.status !== 200) { 
+            toggleLoading(true); 
+            // throw new Error('Lỗi lấy dữ liệu các kiện của đơn'); 
+            return;
+        }
 
         var result = await orderPackagesResp.json();
         var username = result.customer.username;
@@ -221,14 +227,16 @@
                         if (orderResp.status !== 200) {
                             toggleLoading(true);
                             alert('Lỗi lấy dữ liệu đơn');
-                            throw new Error('Lỗi lấy dữ liệu của đơn');
+                            // throw new Error('Lỗi lấy dữ liệu của đơn');
+                            return;
                         }
 
                         if (orderResp.status === 401) {
                             localStorage.removeItem('authenmeSessionToken');
                             toggleLoading(true);
                             initToken();
-                            throw new Error('Lỗi authorize');
+                            return;
+                            // throw new Error('Lỗi authorize');
                         }
                         var resultOrder = await orderResp.json();
 
@@ -251,7 +259,8 @@
 
         if (total_unpaid_all > 500) {
             alert('Tài chính đơn hàng quá 500 tệ không thể tính phí');
-            throw true;
+            // throw true;
+            return;
         }
 
         var { cellGrandTotalInner, cellGrandTotalOuter } = await getDomesticShippingFee({ amount: total_unpaid_all, weight: total_weight });
@@ -259,14 +268,20 @@
         if (cellGrandTotalInner == undefined || cellGrandTotalOuter == undefined) {
             toggleLoading(true);
             alert('Không thể tính phí vận chuyển nội địa');
-            throw true;
+            // throw true;
+            return;
         }
 
         updateBoxResultShippingFee({ shipping_fee_inner: Math.ceil(cellGrandTotalInner), shipping_fee_outer: Math.ceil(cellGrandTotalOuter) });
 
         var urlUser = `https://sabomall.admin.mygobiz.net/api/admin/customers/${username}`;
         var customerRaw = await fetch(urlUser, builderRequests({ currUrl: urlUser, method: 'GET' }));
-        if (customerRaw.status !== 200) { toggleLoading(true); alert('Lỗi lấy dữ liệu user'); throw new Error('Lỗi lấy dữ liệu user'); }
+        if (customerRaw.status !== 200) { 
+            toggleLoading(true); 
+            alert('Lỗi lấy dữ liệu user'); 
+            // throw new Error('Lỗi lấy dữ liệu user'); 
+            return;
+        }
 
         var resultUser = await customerRaw.json();
         var phonenumber = resultUser.phone;
