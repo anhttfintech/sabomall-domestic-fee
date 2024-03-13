@@ -158,7 +158,7 @@
     
                 }
             </style>
-            <span class="item">Tỷ giá: <b>${exchange_rate}</b> | Tài chính: <b>${amount}</b></span>
+            <span class="item">Tỷ giá: <b>${exchange_rate}</b> | Tài chính: <b>${amount}¥</b></span>
             <span class="item">Đi nội thành (HN/HCM): <b>${shipping_fee_inner}</b></span>
             <span class="item">Đi tỉnh: <b>${shipping_fee_outer}</b></span>
         `;
