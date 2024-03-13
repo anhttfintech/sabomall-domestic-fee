@@ -265,7 +265,7 @@
             return;
         }
 
-        var { cellGrandTotalInner, cellGrandTotalOuter } = await getDomesticShippingFee({ amount: total_unpaid_all, weight: total_weight });
+        var { cellGrandTotalInner, cellGrandTotalOuter } = await getDomesticShippingFee({ amount: total_unpaid_all, weight: total_weight, domestin_shipping_id: domestin_shipping_id });
 
         if (cellGrandTotalInner == undefined || cellGrandTotalOuter == undefined) {
             toggleLoading(true);
@@ -313,4 +313,3 @@
         grabShippingFee();
     }
 })();
-
