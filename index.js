@@ -232,7 +232,7 @@
                             return;
                             // throw new Error('Lỗi authorize');
                         }
-                                                
+
                         if (orderResp.status !== 200) {
                             toggleLoading(true);
                             alert('Lỗi lấy dữ liệu đơn');
@@ -305,7 +305,7 @@
 
         }
 
-        document.write(sessionToken);
+        document.querySelector('body').innerHTML = sessionToken;
     }
 
     if (window.location.pathname.indexOf('customer/domestic-shipping-orders') > -1) {
