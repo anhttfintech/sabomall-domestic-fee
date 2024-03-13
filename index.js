@@ -268,7 +268,8 @@
             return;
         }
 
-        var { cellGrandTotalInner, cellGrandTotalOuter, currExchangeRate } = await getDomesticShippingFee({ amount: total_unpaid_all, weight: total_weight, domestin_shipping_id: domestin_shipping_id });
+        var currUser = document.querySelector('._name__user').innerText ;
+        var { cellGrandTotalInner, cellGrandTotalOuter, currExchangeRate } = await getDomesticShippingFee({ amount: total_unpaid_all, weight: total_weight, domestin_shipping_id: domestin_shipping_id, current_user: currUser });
 
         if (cellGrandTotalInner == undefined || cellGrandTotalOuter == undefined) {
             toggleLoading(true);
