@@ -142,7 +142,7 @@
     }
 
     window.updateBoxResultShippingFee = (params) => {
-        const { shipping_fee_inner, shipping_fee_outer } = params;
+        const { shipping_fee_inner, shipping_fee_outer, exchange_rate } = params;
         var html = $ => `
             <style>
                 .__box_result_shipping_fee {
@@ -158,6 +158,7 @@
     
                 }
             </style>
+            <span class="item">Tỷ giá: <b>${exchange_rate}</b></span>
             <span class="item">Đi nội thành (HN/HCM): <b>${shipping_fee_inner}</b></span>
             <span class="item">Đi tỉnh: <b>${shipping_fee_outer}</b></span>
         `;
@@ -265,7 +266,7 @@
             return;
         }
 
-        var { cellGrandTotalInner, cellGrandTotalOuter } = await getDomesticShippingFee({ amount: total_unpaid_all, weight: total_weight, domestin_shipping_id: domestin_shipping_id });
+        var { cellGrandTotalInner, cellGrandTotalOuter, currExchangeRate } = await getDomesticShippingFee({ amount: total_unpaid_all, weight: total_weight, domestin_shipping_id: domestin_shipping_id });
 
         if (cellGrandTotalInner == undefined || cellGrandTotalOuter == undefined) {
             toggleLoading(true);
@@ -274,7 +275,7 @@
             return;
         }
 
-        updateBoxResultShippingFee({ shipping_fee_inner: Math.ceil(cellGrandTotalInner), shipping_fee_outer: Math.ceil(cellGrandTotalOuter) });
+        updateBoxResultShippingFee({ shipping_fee_inner: Math.ceil(cellGrandTotalInner), shipping_fee_outer: Math.ceil(cellGrandTotalOuter), exchange_rate: currExchangeRate  });
 
         var urlUser = `https://sabomall.admin.mygobiz.net/api/admin/customers/${username}`;
         var customerRaw = await fetch(urlUser, builderRequests({ currUrl: urlUser, method: 'GET' }));
