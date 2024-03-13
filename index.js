@@ -69,7 +69,7 @@
 
         head.appendChild(link);
     }
-    var window.openGrabSessionToken = async () => {
+    window.openGrabSessionToken = async () => {
         var w = window.open('https://sabomall.admin.mygobiz.net/#/?automation', '_blank');
         var html_input_grab_token = $ => `
             <style>
