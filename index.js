@@ -22,8 +22,8 @@
             if (!document.querySelector('[class=__box_link_grab_token]')) {
                 insertBoxLinkGrabToken();
             }
-
-            throw new Error('Chưa có TOKEN');
+            
+            return;
         }
     }
     var getToken = (currUrl) => {
