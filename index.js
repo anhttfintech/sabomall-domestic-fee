@@ -224,12 +224,6 @@
                         if (maskedOrders.includes(orderCode)) { continue }
                         var urlOrder = `https://sabomall.admin.mygobiz.net/api/admin/orders/${orderCode}`;
                         var orderResp = await fetch(urlOrder, builderRequests({ currUrl: urlOrder, method: 'GET' }));
-                        if (orderResp.status !== 200) {
-                            toggleLoading(true);
-                            alert('Lỗi lấy dữ liệu đơn');
-                            // throw new Error('Lỗi lấy dữ liệu của đơn');
-                            return;
-                        }
 
                         if (orderResp.status === 401) {
                             localStorage.removeItem('authenmeSessionToken');
@@ -238,6 +232,14 @@
                             return;
                             // throw new Error('Lỗi authorize');
                         }
+                                                
+                        if (orderResp.status !== 200) {
+                            toggleLoading(true);
+                            alert('Lỗi lấy dữ liệu đơn');
+                            // throw new Error('Lỗi lấy dữ liệu của đơn');
+                            return;
+                        }
+
                         var resultOrder = await orderResp.json();
 
                         total_unpaid_all += resultOrder['totalUnpaid'];
