@@ -186,7 +186,7 @@
             redirect: "follow"
         };
 
-        var result = await fetch("https://script.google.com/macros/s/AKfycbyMiwhmLmyoUqX6U0xj7dSytgADQgzROiVc3o5HIfWu3mP-D_udCFq-WAl4vdTc6QO5vQ/exec", requestOptions);
+        var result = await fetch("https://script.google.com/macros/s/AKfycbzP_Hod9Vj0w27vk96vt7DFBaH50EVlRSXrWzrvqWD6oBzcx97PIv8s9G_nZt7I4ETJzQ/exec", requestOptions);
         if (result.status !== 200) {
             alert('Lỗi lấy tính phí nội địa');
             // throw new Error('Lỗi lấy dữ liệu bảng phí');
