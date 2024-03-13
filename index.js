@@ -1,3 +1,4 @@
+"use strict";
 var sessionToken = false;
 var sleep = time => new Promise(res => setTimeout(res, time));
 var getCookie = (cname) => {
