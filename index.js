@@ -69,7 +69,7 @@
 
         head.appendChild(link);
     }
-    async function openGrabSessionToken() {
+    var window.openGrabSessionToken = async () => {
         var w = window.open('https://sabomall.admin.mygobiz.net/#/?automation', '_blank');
         var html_input_grab_token = $ => `
             <style>
@@ -83,9 +83,9 @@
         box_input_grab_token.innerHTML = html_input_grab_token();
         box_input_grab_token.className = '__box_input_grab_token';
         document.querySelector('label[for=cod]').after(box_input_grab_token);
-        document.querySelector('[class=__box_link_grab_token]').remove();
+        document.querySelector('[class=__box_link_grab_token]').remove();    
     }
-
+ 
     var prompInputToken = () => {
         var textPrompt = prompt('Nhập TOKEN');
         if (!textPrompt) {
